@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+.env
+.env.local
+*.pyc
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.next/
+dist/
+build/
+.vercel
+
+# Local data/models/checkpoints (usually large)
+ckpts/
+dataset/
+trialModel/TTSModel/
+*.pth
+*.pt
+*.onnx
+*.ckpt
+*.h5
+
+# Audio/Output files
+*.wav
+*.mp3
+*.flac
+*.ogg
+
+# Logs
+logs/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.bak
+*.tmp
+.pytest_cache/
+.ipynb_checkpoints/

@@ -1,0 +1,63 @@
+
+services:
+  # Part 1: Labeling (Mimic Recording Studio)
+  backend:
+    container_name: mrs-backend
+    build:
+      context: ./app/mimic-recording-studio/backend/
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app/mimic-recording-studio/backend/:/src
+      - mrs-audio-data:/src/audio_files
+    environment:
+      - CORPUS=vietnamese_train.csv
+      - APIPORT=5000
+      - WEBWORKERS=1
+
+  frontend:
+    container_name: mrs-frontend
+    build:
+      context: ./app/mimic-recording-studio/frontend/
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app/mimic-recording-studio/frontend/:/src
+
+  # Part 2 & 3: Training & Testing (F5-TTS Dashboard)
+  tts-backend:
+    container_name: tts-backend
+    build:
+      context: ./app/tts-backend/
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/tts-backend/:/app
+      - ./F5-TTS:/app/F5-TTS
+      - ./ckpts:/app/ckpts
+      - mrs-audio-data:/datasets
+      - ./training_personal_TTS.py:/app/training_personal_TTS.py
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+
+  tts-dashboard:
+    container_name: tts-dashboard
+    build:
+      context: ./app/tts-dashboard/
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./app/tts-dashboard/:/app
+      - /app/node_modules
+    depends_on:
+      - tts-backend
+
+volumes:
+  mrs-audio-data:
