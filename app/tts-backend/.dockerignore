@@ -1,0 +1,37 @@
+# Build context ignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.git/
+.vscode/
+.idea/
+
+# Large directories (Must be ignored during build, use VOLUMES instead)
+ckpts/
+generated/
+datasets/
+F5-TTS/
+data/
+
+# Specific large files
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.wav
+*.mp3
+*.flac
+*.zip
+*.tar
+*.tar.gz
+
+# Env
+venv/
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db

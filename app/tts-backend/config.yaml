@@ -1,0 +1,20 @@
+paths:
+  dataset_dir: "/datasets"
+  ckpt_dir: "/app/F5-TTS/ckpts"
+  generated_dir: "/app/generated"
+  train_log_file: "/app/generated/training_log.txt"
+  train_status_file: "/app/generated/training_status.txt"
+  f5_tts_src: "/app/F5-TTS/src"
+  f5_tts_training_script: "/app/F5-TTS/training_personal_TTS.py"
+  
+training_defaults:
+  base_model: "F5TTS-Base"
+  epoch: 10
+  batch_size: 4
+  learning_rate: 7.5e-5
+  num_warmup_updates: 500
+
+api:
+  version: "1.1.0"
+  train_port: 8000
+  infer_port: 8001

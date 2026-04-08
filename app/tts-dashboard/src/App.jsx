@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mic, Activity, Headphones, Play, Database, Settings, RefreshCw, Volume2, StopCircle, CheckCircle, AlertCircle, Music } from 'lucide-react';
+import config from './config';
 
-const API_URL = 'http://localhost:8000';
-const MRS_URL = 'http://localhost:3000';
+const { TRAIN_URL, INFER_URL, MRS_URL } = config;
 
 function App() {
   const [activeTab, setActiveTab] = useState('label');
@@ -10,8 +10,8 @@ function App() {
   const [checkpoints, setCheckpoints] = useState([]);
 
   const fetchData = () => {
-    fetch(`${API_URL}/datasets`).then(r => r.json()).then(d => setDatasets(d.datasets || [])).catch(console.error);
-    fetch(`${API_URL}/checkpoints`).then(r => r.json()).then(c => setCheckpoints(c.checkpoints || [])).catch(console.error);
+    fetch(`${INFER_URL}/datasets`).then(r => r.json()).then(d => setDatasets(d.datasets || [])).catch(console.error);
+    fetch(`${INFER_URL}/checkpoints`).then(r => r.json()).then(c => setCheckpoints(c.checkpoints || [])).catch(console.error);
   };
 
   useEffect(() => { fetchData(); }, []);
@@ -98,7 +98,7 @@ function TrainingTab({ datasets }) {
 
   // Poll backend status on mount in case a training was already in progress
   useEffect(() => {
-    fetch(`${API_URL}/train/status`)
+    fetch(`${TRAIN_URL}/train/status`)
       .then(r => r.json())
       .then(d => {
         if (d.status === 'running') {
@@ -115,7 +115,7 @@ function TrainingTab({ datasets }) {
 
   const attachStream = () => {
     if (eventSourceRef.current) eventSourceRef.current.close();
-    const es = new EventSource(`${API_URL}/train_stream`);
+    const es = new EventSource(`${TRAIN_URL}/train_stream`);
     eventSourceRef.current = es;
 
     es.onmessage = (event) => {
@@ -152,7 +152,7 @@ function TrainingTab({ datasets }) {
     setLogs([]);
 
     try {
-      const res = await fetch(`${API_URL}/train`, {
+      const res = await fetch(`${TRAIN_URL}/train`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(config),
@@ -298,7 +298,7 @@ function TestingTab({ checkpoints, datasets }) {
   // Load ref audios when dataset changes
   useEffect(() => {
     if (!dataset) { setRefAudios([]); setRefAudio(''); return; }
-    fetch(`${API_URL}/datasets/${dataset}/ref_audios`)
+    fetch(`${INFER_URL}/datasets/${dataset}/ref_audios`)
       .then(r => r.json())
       .then(d => { setRefAudios(d.ref_audios || []); setRefAudio(''); setPreviewUrl(null); })
       .catch(() => setRefAudios([]));
@@ -307,7 +307,7 @@ function TestingTab({ checkpoints, datasets }) {
   // Update preview when ref audio changes
   useEffect(() => {
     if (refAudio && dataset) {
-      setPreviewUrl(`${API_URL}/datasets/${dataset}/audio/${refAudio}`);
+      setPreviewUrl(`${INFER_URL}/datasets/${dataset}/audio/${refAudio}`);
     } else {
       setPreviewUrl(null);
     }
@@ -320,7 +320,7 @@ function TestingTab({ checkpoints, datasets }) {
     setStatusMsg('');
 
     try {
-      const res = await fetch(`${API_URL}/generate`, {
+      const res = await fetch(`${INFER_URL}/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -333,7 +333,7 @@ function TestingTab({ checkpoints, datasets }) {
       });
       const data = await res.json();
       if (data.audio_path) {
-        setAudioUrl(`${API_URL}${data.audio_path}?t=${Date.now()}`);
+        setAudioUrl(`${INFER_URL}${data.audio_path}?t=${Date.now()}`);
         setStatusMsg(data.warning || data.status || 'Done');
       } else {
         setStatusMsg('Error: No audio returned from backend.');

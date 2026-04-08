@@ -87,19 +87,29 @@ graph TD
 
 ## 7. Kiến trúc Docker (Docker Architecture)
 
-Hệ thống được vận hành thông qua Docker Compose với 4 container chính:
+Hệ thống được vận hành thông qua Docker Compose với **5 container** chính:
 
-| Service | Container Name | Port | Mục đích |
-| :--- | :--- | :--- | :--- |
-| **mrs-backend** | mrs-backend | 5000 | Backend cho việc thu thập dữ liệu (Mimic). |
-| **mrs-frontend** | mrs-frontend | 3000 | Frontend giao diện thu âm. |
-| **tts-backend** | tts-backend | 8000 | Backend FastAPI xử lý huấn luyện & inference (Hỗ trợ GPU). |
-| **tts-dashboard** | tts-dashboard | 3001 | Giao diện quản lý huấn luyện và kiểm thử mới. |
+| Service | Container Name | Port | GPU | Mục đích |
+| :--- | :--- | :--- | :--- | :--- |
+| **mrs-backend** | mrs-backend | 5000 | ❌ | Backend thu thập dữ liệu (Mimic Recording Studio). |
+| **mrs-frontend** | mrs-frontend | 3000 | ❌ | Giao diện thu âm. |
+| **tts-train** | tts-train | 8000 | ✅ | Backend FastAPI **chỉ xử lý Training** (yêu cầu GPU/CUDA). |
+| **tts-infer** | tts-infer | 8001 | ❌ | Backend FastAPI **chỉ xử lý Inference/Generation** (không cần GPU). |
+| **tts-dashboard** | tts-dashboard | 3001 | ❌ | Giao diện quản lý huấn luyện và kiểm thử. |
+
+### Phân chia trách nhiệm Backend
+
+| Endpoint | Service |
+| :--- | :--- |
+| `POST /train`, `GET /train/status`, `GET /train_stream` | **tts-train** (port 8000) |
+| `POST /generate`, `GET /audio/{file}` | **tts-infer** (port 8001) |
+| `GET /datasets`, `GET /checkpoints` | Cả hai service đều có (read-only) |
 
 ### Chia sẻ dữ liệu (Shared Volumes)
-- `./mimic-recording-studio/backend/audio_files` được mount tới `/datasets` trong `tts-backend`.
-- **Mã nguồn App**: Nằm trong thư mục con `./app/tts-backend` và `./app/tts-dashboard`.
-- `./ckpts` lưu trữ các model checkpoint để cả `tts-backend` và `tts-dashboard` có thể truy cập.
+- `mrs-audio-data` (named volume): audio files từ Mimic → mount vào `/datasets` trên cả `tts-train` và `tts-infer`.
+- `tts-generated` (named volume): thư mục `/app/generated` chia sẻ giữa `tts-train` (ghi log) và `tts-infer` (ghi audio output).
+- `./ckpts` (bind mount): lưu model checkpoints, được mount vào cả `tts-train` (ghi) và `tts-infer` (đọc).
+- **Mã nguồn App**: `./app/tts-train`, `./app/tts-infer`, `./app/tts-dashboard`.
 
 ---
 

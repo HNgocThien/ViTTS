@@ -1,0 +1,65 @@
+tts-platform/
+│
+├── frontend/                         # React / NextJS / Vue
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── collect/
+│   │   │   ├── train/
+│   │   │   ├── infer/
+│   │   │   └── models/
+│   │   │
+│   │   ├── components/
+│   │   │   ├── collect/
+│   │   │   ├── train/
+│   │   │   ├── infer/
+│   │   │   └── shared/
+│   │   │
+│   │   └── services/                # API calls
+│   │
+│   └── public/
+│
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── collect/
+│   │   │   ├── train/
+│   │   │   ├── infer/
+│   │   │   └── models/
+│   │   │
+│   │   ├── services/
+│   │   │   ├── collect_service.py
+│   │   │   ├── train_service.py
+│   │   │   ├── infer_service.py
+│   │   │   └── model_registry_service.py
+│   │   │
+│   │   ├── workers/                 # background jobs
+│   │   │   ├── trainer_worker.py
+│   │   │   └── preprocess_worker.py
+│   │   │
+│   │   ├── db/
+│   │   └── core/
+│   │
+│   └── Dockerfile
+│
+├── model_registry/                  # quản lý source code/checkpoint model
+│   ├── F5-TTS/
+│   │   ├── source/
+│   │   ├── checkpoints/
+│   │   ├── configs/
+│   │   └── metadata.json
+│   │
+│   ├── XTTS/
+│   └── YourCustomModel/
+│
+├── shared_storage/
+│   ├── datasets/
+│   ├── processed/
+│   ├── outputs/
+│   └── logs/
+│
+├── docker/
+│   ├── docker-compose.yml
+│   ├── nginx/
+│   └── workers/
+│
+└── README.md
