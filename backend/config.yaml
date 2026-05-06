@@ -1,0 +1,27 @@
+paths:
+  dataset_dir: "/shared_storage/datasets"
+  train_dir: "/shared_storage/outputs/train"
+  infer_dir: "/shared_storage/outputs/infer"
+  train_log_file: "/shared_storage/outputs/train/training_log.txt"
+  train_status_file: "/shared_storage/outputs/train/training_status.txt"
+  infer_log_file: "/shared_storage/outputs/infer/inference_debug.txt"
+  prompts_csv: "/shared_storage/prompts/vietnamese_train.csv"
+
+models:
+  F5TTS-Base:
+    src: "/model_registry/F5-TTS/src"
+    train_script: "/model_registry/F5-TTS/training_personal_TTS.py"
+    infer_script: "/model_registry/F5-TTS/infer_personal_TTS.py"
+    ckpt_parent: "/model_registry/F5-TTS/ckpts"
+    type: "f5tts"
+  
+training_defaults:
+  base_model: "F5TTS-Base"
+  epoch: 10
+  batch_size: 4
+  learning_rate: 7.5e-5
+  num_warmup_updates: 500
+
+api:
+  version: "1.2.0"
+  port: 8000

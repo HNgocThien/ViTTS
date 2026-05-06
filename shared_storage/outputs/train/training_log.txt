@@ -1,0 +1,13 @@
+[INFO] Training initialized for dataset: thien_dataset
+[INFO] Base model: F5TTS-Base (Type: f5tts)
+[INFO] Epochs: 10 | Batch size: 1
+[INFO] Learning rate: 7.5e-05 | Warmup: 500
+usage: training_personal_TTS.py [-h] --data_dir DATA_DIR --metadata_file
+                                METADATA_FILE [--epochs EPOCHS]
+                                [--batch_size BATCH_SIZE]
+                                [--checkpoint_dir CHECKPOINT_DIR]
+                                [--pretrained_checkpoint PRETRAINED_CHECKPOINT]
+                                [--learning_rate LEARNING_RATE]
+                                [--num_warmup_updates NUM_WARMUP_UPDATES]
+training_personal_TTS.py: error: unrecognized arguments: --model_type f5tts
+[ERROR] Training failed with exit code 2

@@ -1,0 +1,15 @@
+[2026-04-12 15:53:50] Inference log reset for new request.
+[2026-04-12 15:53:50] Generation request: {"text":"Nhớ ai bổi hổi bồi hồi, như đứng đống lửa, như ngồi đống than.","checkpoint":null,"ref_audio":null,"ref_text":null,"model":"F5TTS-Base","dataset":null}
+[2026-04-12 15:53:50] Using auto-detected latest checkpoint: /model_registry/F5-TTS/ckpts/base/model_1200000.pt
+[2026-04-12 15:54:00] Auto-detected: arch=F5TTS_Base, tokenizer=pinyin from /model_registry/F5-TTS/ckpts/base/model_1200000.pt
+[INFO] Launching inference subprocess...
+usage: infer_personal_TTS.py [-h] --ref_audio REF_AUDIO [--ref_text REF_TEXT]
+                             --gen_text GEN_TEXT [--ckpt_file CKPT_FILE]
+                             [--tokenizer {auto,byte,pinyin,custom}]
+                             [--output_dir OUTPUT_DIR]
+                             [--output_file OUTPUT_FILE] [--remove_silence]
+                             [--vocoder_name {vocos,bigvgan}]
+                             [--nfe_step NFE_STEP]
+                             [--cfg_strength CFG_STRENGTH] [--device DEVICE]
+infer_personal_TTS.py: error: the following arguments are required: --ref_audio
+[ERROR] Inference failed (exit code 2)

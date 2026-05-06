@@ -22,9 +22,8 @@ build/
 .vercel
 
 # Local data/models/checkpoints (usually large)
-ckpts/
-dataset/
-trialModel/TTSModel/
+datasets/*
+!dataset/.gitkeep
 *.pth
 *.pt
 *.onnx

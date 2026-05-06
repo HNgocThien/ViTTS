@@ -1,93 +1,38 @@
+version: '3.8'
+
 services:
-  # ========================
-  # MRS (Labeling)
-  # ========================
-  mrs-backend:
-    container_name: mrs-backend
-    build:
-      context: ./app/mimic-recording-studio/backend/
-    image: mrs-backend:latest
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./app/mimic-recording-studio/backend/:/src
-      - mrs-audio-data:/src/audio_files
-    environment:
-      - CORPUS=vietnamese_train.csv
-      - APIPORT=5000
-      - WEBWORKERS=1
-
-  mrs-frontend:
-    container_name: mrs-frontend
-    build:
-      context: ./app/mimic-recording-studio/frontend/
-    image: mrs-frontend:latest
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./app/mimic-recording-studio/frontend/:/src
-
-  # ========================
-  # TTS TRAIN (BUILD 1 LẦN)
-  # ========================
-  tts-train:
-    container_name: tts-train
-    build:
-      context: ./app/tts-backend/
-    image: tts-backend:latest # ← build xong tạo image này
+  backend:
+    container_name: tts-backend
+    # build:
+    #   context: ./backend
+    image: tts-backend:latest
     ports:
       - "8000:8000"
     volumes:
-      - ./app/tts-backend/:/app
-      - ./trialModel/TTSModel/F5-TTS:/app/F5-TTS
-      - mrs-audio-data:/datasets
-      - tts-generated:/app/generated
-    command: [ "uvicorn", "train_api:app", "--host", "0.0.0.0", "--port", "8000" ]
+      - ./backend:/app
+      - ./shared_storage:/shared_storage
+      - ./model_registry:/model_registry
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     deploy:
       resources:
         reservations:
           devices:
-            - capabilities: [ "gpu" ]
-    environment:
-      - CUDA_VISIBLE_DEVICES=0
-      - PYTHONUNBUFFERED=1
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
 
-  # ========================
-  # TTS INFER (DÙNG LẠI IMAGE)
-  # ========================
-  tts-infer:
-    container_name: tts-infer
-    image: tts-backend:latest # ← chỉ dùng image đã build của tts-train
-    depends_on:
-      - tts-train
-    ports:
-      - "8001:8001"
-    volumes:
-      - ./app/tts-backend/:/app
-      - ./trialModel/TTSModel/F5-TTS:/app/F5-TTS
-      - mrs-audio-data:/datasets
-      - tts-generated:/app/generated
-    environment:
-      - PYTHONUNBUFFERED=1
-    command: [ "uvicorn", "infer_api:app", "--host", "0.0.0.0", "--port", "8001" ]
-
-  # ========================
-  # DASHBOARD
-  # ========================
-  tts-dashboard:
-    container_name: tts-dashboard
-    build:
-      context: ./app/tts-dashboard/
+  frontend:
+    container_name: tts-frontend
+    # build:
+    #   context: ./frontend
     image: tts-dashboard:latest
     ports:
-      - "3001:3001"
+      - "3000:3000"
     volumes:
-      - ./app/tts-dashboard/:/app
+      - ./frontend:/app
       - /app/node_modules
-    depends_on:
-      - tts-train
-      - tts-infer
-
-volumes:
-  mrs-audio-data:
-  tts-generated:
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host 0.0.0.0 --port 3000

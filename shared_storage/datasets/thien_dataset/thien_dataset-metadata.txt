@@ -1,0 +1,2 @@
+wavs/0001_thien_dataset.wav|Hôm nay tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình.
+wavs/0002_thien_dataset.wav|Bạn có thể nghe rõ giọng nói của tôi không?

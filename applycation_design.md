@@ -1,132 +1,90 @@
-# Tài liệu thiết kế hệ thống TTS (Labeling, Training, Testing)
+# Tài liệu thiết kế hệ thống TTS (Labeling, Training, Testing) - Monorepo Version
 
-Hệ thống này được thiết kế để cung cấp một quy trình khép kín từ việc thu thập giọng nói cá nhân đến việc huấn luyện mô hình TTS và thực hiện chuyển đổi văn bản thành giọng nói (Inference).
+Hệ thống được thiết kế theo kiến trúc Monorepo hiện đại, tối ưu cho quy trình nghiên cứu và phát triển TTS cá nhân.
 
 ---
 
 ## 1. Kiến trúc tổng quan (Architecture Overview)
 
-Hệ thống được chia thành 3 phần chính chạy trên một nền tảng Web thống nhất:
+Hệ thống được rút gọn thành 2 service chính chạy qua Docker Compose:
 
-- **Frontend**: React/Next.js (Giao diện hiện đại, responsive).
-- **Backend API**: FastAPI (Python) - Phục vụ quản lý dữ liệu, điều phối huấn luyện và thực hiện inference.
-- **Database**: SQLite (Lưu trữ thông tin người dùng, danh sách bản thu, cấu hình huấn luyện và lịch sử checkpoint).
-- **Storage**: Directory-based storage cho audio files (.wav) và model checkpoints (.pt).
-
----
-
-## 2. Phần 1: Labeling (Thu thập dữ liệu)
-### Mục tiêu: Tái sử dụng Mimic Recording Studio để thu âm giọng nói chất lượng cao.
-
-- **Tích hợp**: 
-    - Sử dụng giao diện thu âm của Mimic (Frontend) để dẫn dắt người dùng đọc các câu mẫu (prompts).
-    - Backend API sẽ ghi nhận các file âm thanh vào thư mục `datasets/{user_id}/wavs`.
-    - Tự động tạo file metadata theo định dạng `filename|transcription|duration` (tương đương định dạng mà F5-TTS yêu cầu).
-- **Chức năng chính**:
-    - Hiển thị script/prompt cho người đọc.
-    - Ghi âm, cắt bỏ khoảng lặng (trim silence) tự động bằng module `Audio` của Mimic.
-    - Xem lại và ghi âm lại nếu cần.
-    - Thống kê tiến độ (đã đọc bao nhiêu câu, tổng thời lượng đã thu được).
+- **Frontend (Port 3000)**: React/Vite (Quản lý thu âm, theo dõi huấn luyện và kiểm thử).
+- **Backend API (Port 8000)**: FastAPI (Phối hợp toàn bộ logic: Thu thập dữ liệu -> Huấn luyện -> Tạo giọng nói).
+- **Storage Strategy**: Sử dụng **Shared Storage** gắn trực tiếp vào Host (Windows), bỏ qua Database để tối ưu tính di động của dữ liệu.
 
 ---
 
-## 3. Phần 2: Training Model trên Web
-### Mục tiêu: Giao diện trực quan để huấn luyện mô hình F5-TTS cho giọng nói vừa thu được.
+## 2. Phần 1: Data Collection (Native Recording)
+### Mục tiêu: Thu thập giọng nói chuẩn định dạng LibriSpeech ngay từ đầu.
 
-- **Giao diện cấu hình (Configuration UI)**:
-    - **Chọn Dataset**: Chọn tập dữ liệu vừa thu (hoặc các tập dữ liệu có sẵn).
-    - **Chọn Model cơ sở (Base Model)**: Lựa chọn F5TTS-Base hoặc F5TTS-Small để Finetuning.
-    - **Tham số huấn luyện**:
-        - Batch size (mặc định: tự động theo VRAM).
-        - Learning rate (mặc định: 7.5e-5).
-        - Epochs: Số lần huấn luyện qua toàn bộ dữ liệu.
-        - Number of warmup updates.
-- **Quản lý tiến trình (Training Manager)**:
-    - Nút **"Start Training"**: Kích hoạt một background process chạy `Trainer` từ F5-TTS.
-    - **Real-time Monitoring**: Sử dụng WebSockets để gửi logs và giá trị Loss (MSE Loss) từ backend lên frontend.
-    - Biểu đồ Loss: Hiển thị sự hội tụ của mô hình.
-- **Checkpointing**: Tự động lưu các file `.pt` vào thư mục `ckpts/{run_name}/`.
+- **Tích hợp Native**: Không sử dụng iframe. Giao diện thu âm được xây dựng trực tiếp trong Dashboard bằng MediaRecorder API.
+- **Quy trình lưu trữ**:
+    - Backend tự động tạo cấu trúc: `shared_storage/datasets/{user_id}/wavs`.
+    - Tự động ghi nối file metadata: `{user_id}-metadata.txt` theo định dạng `wavs/file.wav|content` (Chuẩn F5-TTS).
+- **Tiến độ**: Tự động nhận diện số câu đã đọc bằng cách quét file hệ thống.
 
 ---
 
-## 4. Phần 3: Test & Generation (Inference)
-### Mục tiêu: Kiểm thử mô hình đã huấn luyện và tạo giọng nói từ văn bản bất kỳ.
+## 3. Phần 2: Training Management
+### Mục tiêu: Điều phối huấn luyện mô hình F5-TTS với giao diện trực quan.
 
-- **Giao diện kiểm thử**:
-    - **Chọn Checkpoint**: Danh sách các model đã huấn luyện thành công.
-    - **Text Input**: Ô nhập văn bản muốn chuyển đổi (Hỗ trợ tiếng Việt).
-    - **Voice Generation**: Nút kích hoạt quá trình Inference (sử dụng CFM và DiT của F5-TTS).
-- **Đầu ra (Output)**:
-    - **File .wav**: Tạo file âm thanh để người dùng có thể tải về.
-    - **Audio Player**: Trình phát nhạc tích hợp để nghe kết quả ngay lập tức.
-    - **Real-time Option**: Cung cấp lựa chọn streaming audio (tạo âm thanh theo từng block) để giảm độ trễ cho người dùng.
-- **Tính năng nâng cao**:
-    - **Reference Audio Selection**: Cho phép chọn một đoạn âm thanh mẫu (ref audio) từ phần Labeling để làm "mồi" (conditioning) cho quá trình tạo giọng nói, đảm bảo tính ổn định của cảm xúc và ngữ điệu.
+- **Cấu hình**: Dataset được lấy trực tiếp từ `shared_storage/datasets`.
+- **Thực thi**: Backend kích hoạt Process huấn luyện nằm trong `model_registry/F5-TTS/`.
+- **Giám sát**: Theo dõi Log thời gian thực qua Server-Sent Events (SSE).
 
 ---
 
-## 5. Luồng dữ liệu (Data Flow)
+## 4. Phần 3: Inference & Testing
+### Mục tiêu: Chạy thử mô hình và tạo âm thanh chất lượng cao.
 
-```mermaid
-graph TD
-    A[Người dùng] -->|Đọc Prompts| B[Labeling - Mimic]
-    B -->|Lưu WAV + Metadata| C[Dataset Folder]
-    C -->|Input| D[Training Dashboard]
-    D -->|Cấu hình + Start| E[F5-TTS Trainer]
-    E -->|Lưu Checkpoint| F[Model Checkpoints]
-    F -->|Chọn Model| G[Testing UI]
-    H[Nhập Text] --> G
-    G -->|Inference| I[Kết quả Audio .wav]
+- **Checkpoints**: Tự động quét các file `.pt` trong `model_registry/F5-TTS/ckpts/`.
+- **Conditioning**: Sử dụng các file vừa thu âm trong `shared_storage/datasets` làm Voice Reference (âm thanh mồi).
+- **Kết quả**: File đầu ra được lưu tại `shared_storage/outputs/`.
+
+---
+
+## 5. Cấu trúc Monorepo (Tree Structure)
+
+```text
+.
+├── backend/               # FastAPI Unified Backend
+├── frontend/              # React/Vite Unified Dashboard
+├── model_registry/        # Quản lý Source code và Checkpoints của model
+│   └── F5-TTS/            # Core logic của F5-TTS
+│   └── (Tuơng lai) VITS/  # Các model tương lai có thể plug-and-play thông qua cấu hình `backend/config.yaml` (train_script, infer_script, type).
+├── shared_storage/        # Dữ liệu dùng chung (Host-mounted)
+│   ├── datasets/          # Chứa giọng nói đã thu âm + metadata
+│   ├── outputs/           # Chứa âm thanh được tạo ra + logs
+│   └── prompts/           # Chứa file câu mẫu (.csv)
+└── docker-compose.yml     # Cấu hình 2 service duy nhất
 ```
 
-## 6. Yêu cầu hệ thống (System Requirements)
-- **Phần cứng**: Khuyến nghị GPU NVIDIA (>= 8GB VRAM) để huấn luyện và inference ổn định.
-- **Môi trường**: Python 3.10+, PyTorch 2.0+, CUDA 11+.
+---
+
+## 6. Luồng dữ liệu (Data Flow)
+
+```mermaid
+graph LR
+    User[Người dùng] -- Ghi âm --> FE[Frontend] -- Upload --> BE[Backend]
+    BE -- Lưu --> SS[Shared Storage]
+    SS -- Input --> BE_Train[Backend Training]
+    BE_Train -- Lưu Checkpoint --> MR[Model Registry]
+    MR -- Load --> BE_Infer[Backend Inference]
+    BE_Infer -- Trả về --> FE
+```
 
 ---
 
-## 7. Kiến trúc Docker (Docker Architecture)
+## 7. Cấu hình Docker (Simplified)
 
-Hệ thống được vận hành thông qua Docker Compose với **5 container** chính:
-
-| Service | Container Name | Port | GPU | Mục đích |
-| :--- | :--- | :--- | :--- | :--- |
-| **mrs-backend** | mrs-backend | 5000 | ❌ | Backend thu thập dữ liệu (Mimic Recording Studio). |
-| **mrs-frontend** | mrs-frontend | 3000 | ❌ | Giao diện thu âm. |
-| **tts-train** | tts-train | 8000 | ✅ | Backend FastAPI **chỉ xử lý Training** (yêu cầu GPU/CUDA). |
-| **tts-infer** | tts-infer | 8001 | ❌ | Backend FastAPI **chỉ xử lý Inference/Generation** (không cần GPU). |
-| **tts-dashboard** | tts-dashboard | 3001 | ❌ | Giao diện quản lý huấn luyện và kiểm thử. |
-
-### Phân chia trách nhiệm Backend
-
-| Endpoint | Service |
-| :--- | :--- |
-| `POST /train`, `GET /train/status`, `GET /train_stream` | **tts-train** (port 8000) |
-| `POST /generate`, `GET /audio/{file}` | **tts-infer** (port 8001) |
-| `GET /datasets`, `GET /checkpoints` | Cả hai service đều có (read-only) |
-
-### Chia sẻ dữ liệu (Shared Volumes)
-- `mrs-audio-data` (named volume): audio files từ Mimic → mount vào `/datasets` trên cả `tts-train` và `tts-infer`.
-- `tts-generated` (named volume): thư mục `/app/generated` chia sẻ giữa `tts-train` (ghi log) và `tts-infer` (ghi audio output).
-- `./ckpts` (bind mount): lưu model checkpoints, được mount vào cả `tts-train` (ghi) và `tts-infer` (đọc).
-- **Mã nguồn App**: `./app/tts-train`, `./app/tts-infer`, `./app/tts-dashboard`.
+| Service | Port | Device | Volume Mapping |
+| :--- | :--- | :--- | :--- |
+| **backend** | 8000 | GPU (NVIDIA) | `./shared_storage`, `./model_registry` |
+| **frontend** | 3000 | CPU | `./frontend` |
 
 ---
 
-## 8. Trạng thái Triển khai (Implementation Status)
-
-- [x] **Labeling (Mimic Recording Studio)**: Đã có sẵn mã nguồn và đang hoạt động.
-- [x] **Training (tts-backend & tts-dashboard)**:
-    - UI/UX glassmorphism dark-mode hoàn chỉnh.
-    - Cấu hình đầy đủ: `dataset`, `base_model`, `epoch`, `batch_size`, `learning_rate`, `num_warmup_updates`.
-    - `POST /train` → spawn `training_personal_TTS.py` qua `subprocess.Popen`, ghi stdout → `training_log.txt`.
-    - `GET /train_stream` → SSE tail log file real-time về browser, kết thúc tự động khi status `done`/`failed`.
-    - `GET /train/status` → endpoint kiểm tra trạng thái training (`idle` | `running` | `done` | `failed`).
-    - Badge trạng thái và auto-scroll log trong dashboard.
-- [x] **Generation & Testing (Inference)**:
-    - `POST /generate` → Thử F5-TTS Python API (`f5_tts.api.F5TTS`) → fallback CLI → fallback silent WAV placeholder.
-    - Tự động tìm checkpoint mới nhất khi không chỉ định.
-    - `GET /datasets/{name}/ref_audios` → liệt kê WAV files từ dataset để làm reference audio.
-    - `GET /datasets/{name}/audio/{path}` → serve audio file để preview trực tiếp trong UI.
-    - Giao diện Testing: chọn checkpoint, chọn ref audio + preview + nhập transcription, play + download WAV.
-- **Tiếp theo**: Chạy `docker-compose restart tts-backend tts-dashboard` để áp dụng thay đổi và kiểm chứng end-to-end!
+## 8. Trạng thái Triển khai (Status)
+- [x] **Monorepo Migration**: Đã hoàn tất 100%.
+- [x] **Native Recording**: Hoạt động, ghi trực tiếp ra định dạng Dataset chuẩn.
+- [x] **Unified API**: Tích hợp xong Train/Infer/Collect vào 1 port 8000.
