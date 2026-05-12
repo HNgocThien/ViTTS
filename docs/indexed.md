@@ -1,7 +1,7 @@
 # Text to Speech Personal - Mục Lục
 
-> **Cập nhật lần cuối**: 2026-05-06
-> **Tổng tiến độ**: 36 / 73 sections hoàn thành *(~49%)*
+> **Cập nhật lần cuối**: 2026-05-07
+> **Tổng tiến độ**: 47 / 73 sections hoàn thành *(~64%)*
 
 ---
 
@@ -46,18 +46,18 @@
 | 2.4 | Quy trình suy diễn (Inference) | [Section2.4.md](Section2.4.md) | ✅ Done |
 | 2.4.1 | Sampling trong Flow Matching | [Section2.4.md](Section2.4.md#241-sampling-trong-flow-matching) | ✅ Done |
 | 2.4.2 | Sinh tín hiệu âm thanh (Vocoding) | [Section2.4.md](Section2.4.md#242-sinh-tín-hiệu-âm-thanh-vocoding) | ✅ Done |
-| 2.5 | Cơ chế Voice Cloning | — | ⬜ Not Started |
-| 2.5.1 | Biểu diễn đặc trưng giọng nói | — | ⬜ Not Started |
-| 2.5.2 | Speaker Adaptation | — | ⬜ Not Started |
-| **3** | **THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG** | — | ⬜ Not Started |
-| 3.1 | Tổng quan kiến trúc hệ thống | — | ⬜ Not Started |
-| 3.1.1 | Backend (FastAPI) | — | ⬜ Not Started |
-| 3.1.2 | Frontend giao diện người dùng | — | ⬜ Not Started |
-| 3.1.3 | Pipeline xử lý | — | ⬜ Not Started |
-| 3.2 | Thu thập và tiền xử lý dữ liệu | — | ⬜ Not Started |
-| 3.2.1 | Thu thập dữ liệu giọng nói | — | ⬜ Not Started |
-| 3.2.2 | Gán nhãn (Labeling) | — | ⬜ Not Started |
-| 3.2.3 | Tiền xử lý âm thanh và văn bản | — | ⬜ Not Started |
+| 2.5 | Cơ chế Voice Cloning | [Section2.5.md](Section2.5.md) | ✅ Done |
+| 2.5.1 | Biểu diễn đặc trưng giọng nói | [Section2.5.md](Section2.5.md#251-biểu-diễn-đặc-trưng-giọng-nói) | ✅ Done |
+| 2.5.2 | Speaker Adaptation | [Section2.5.md](Section2.5.md#252-speaker-adaptation--cá-nhân-hóa-giọng-nói) | ✅ Done |
+| **3** | **THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG** | — | 🔄 In Progress |
+| 3.1 | Tổng quan kiến trúc hệ thống | [Section3.1.md](Section3.1.md) | ✅ Done |
+| 3.1.1 | Backend (FastAPI) | [Section3.1.md](Section3.1.md#311-backend-fastapi) | ✅ Done |
+| 3.1.2 | Frontend giao diện người dùng | [Section3.1.md](Section3.1.md#312-frontend--giao-diện-người-dùng) | ✅ Done |
+| 3.1.3 | Pipeline xử lý | [Section3.1.md](Section3.1.md#313-pipeline-xử-lý-tổng-thể) | ✅ Done |
+| 3.2 | Thu thập và tiền xử lý dữ liệu | [Section3.2.md](Section3.2.md) | ✅ Done |
+| 3.2.1 | Thu thập dữ liệu giọng nói | [Section3.2.md](Section3.2.md#321-thu-thập-dữ-liệu-giọng-nói) | ✅ Done |
+| 3.2.2 | Gán nhãn (Labeling) | [Section3.2.md](Section3.2.md#322-gán-nhãn-labeling) | ✅ Done |
+| 3.2.3 | Tiền xử lý âm thanh và văn bản | [Section3.2.md](Section3.2.md#323-tiền-xử-lý-âm-thanh-và-văn-bản) | ✅ Done |
 | 3.3 | Huấn luyện mô hình | — | ⬜ Not Started |
 | 3.3.1 | Cấu hình môi trường (GPU, Docker) | — | ⬜ Not Started |
 | 3.3.2 | Các siêu tham số (Hyperparameters) | — | ⬜ Not Started |
@@ -113,6 +113,9 @@
 | [Section2.2.md](Section2.2.md) | ~12 KB | ✅ Đầy đủ (Kiến trúc F5-TTS + Phụ lục) |
 | [Section2.3.md](Section2.3.md) | ~10 KB | ✅ Đầy đủ (Quy trình huấn luyện + Phụ lục) |
 | [Section2.4.md](Section2.4.md) | ~5 KB | ✅ Đầy đủ (Quy trình suy diễn + Phụ lục) |
+| [Section2.5.md](Section2.5.md) | ~8 KB | ✅ Đầy đủ (Voice Cloning + Phụ lục) |
+| [Section3.1.md](Section3.1.md) | ~10 KB | ✅ Đầy đủ (Kiến trúc hệ thống + Phụ lục) |
+| [Section3.2.md](Section3.2.md) | ~9 KB | ✅ Đầy đủ (Thu thập & tiền xử lý dữ liệu + Phụ lục) |
 
 ---
 

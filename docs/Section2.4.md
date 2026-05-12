@@ -6,7 +6,7 @@ Quá trình suy diễn (Inference) của F5-TTS là bước chuyển đổi văn
 flowchart LR
     A[Text Input] --> B(Text Encoder)
     C[Audio Prompt] --> D(Audio Encoder)
-    B --> E{DiT + Flow Matching\n(ODE Solver)}
+    B --> E["DiT + Flow Matching<br>(ODE Solver)"]
     D --> E
     F[Noise] --> E
     E --> G[Mel-spectrogram]
