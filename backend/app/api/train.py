@@ -26,6 +26,7 @@ class TrainConfig(BaseModel):
     batch_size: int = TRAINING_DEFAULTS.get("batch_size", 4)
     learning_rate: float = TRAINING_DEFAULTS.get("learning_rate", 7.5e-5)
     num_warmup_updates: int = TRAINING_DEFAULTS.get("num_warmup_updates", 500)
+    vocab_file: str = None
 
 @router.post("/")
 async def start_training(config: TrainConfig, background_tasks: BackgroundTasks):
@@ -47,6 +48,23 @@ async def start_training(config: TrainConfig, background_tasks: BackgroundTasks)
     with open(TRAIN_STATUS_FILE, "w") as f:
         f.write("running")
 
+    # ── Vocab file resolution ────────────
+    vocab_file = config.vocab_file
+    if not vocab_file:
+        # Check in dataset dir first
+        ds_vocab = os.path.join(dataset_path, "vocab.txt")
+        # Or check in the central data registry (as suggested by user)
+        central_vocab = os.path.join(os.path.dirname(model_cfg.get("train_script", "")), "data", "vietnamese", "vocab.txt")
+        # Or check in base model dir
+        model_vocab = os.path.join(model_cfg.get("ckpt_parent", ""), "vocab.txt")
+        
+        if os.path.exists(ds_vocab):
+            vocab_file = ds_vocab
+        elif os.path.exists(central_vocab):
+            vocab_file = central_vocab
+        elif os.path.exists(model_vocab):
+            vocab_file = model_vocab
+
     cmd = [
         sys.executable,
         model_cfg.get("train_script"),
@@ -59,6 +77,8 @@ async def start_training(config: TrainConfig, background_tasks: BackgroundTasks)
         "--num_warmup_updates", str(config.num_warmup_updates),
         "--model_type", model_cfg.get("type", "f5tts")
     ]
+    if vocab_file:
+        cmd += ["--vocab_file", vocab_file]
 
     def run_training():
         env = os.environ.copy()

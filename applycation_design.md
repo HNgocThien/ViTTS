@@ -88,3 +88,16 @@ graph LR
 - [x] **Monorepo Migration**: Đã hoàn tất 100%.
 - [x] **Native Recording**: Hoạt động, ghi trực tiếp ra định dạng Dataset chuẩn.
 - [x] **Unified API**: Tích hợp xong Train/Infer/Collect vào 1 port 8000.
+- [x] **Smart Vocab System**: Tự động nhận diện bảng chữ cái tiếng Việt cho cả Train và Infer.
+
+---
+
+## 9. Cơ chế Smart Vocab & Pretrained Support (Bổ sung mới)
+Để hỗ trợ tốt nhất cho tiếng Việt và các model Pretrained, hệ thống áp dụng cơ chế tự động nhận diện bảng chữ cái (Vocab):
+
+- **Inference**: Script tự động tìm file `vocab.txt` nằm cùng thư mục với checkpoint `.pt`. Nếu tìm thấy, nó sẽ tự động nạp bảng chữ cái tiếng Việt/Custom thay vì dùng Byte mặc định.
+- **Training**: 
+    - Ưu tiên 1: Lấy `vocab_file` truyền từ giao diện (nếu có).
+    - Ưu tiên 2: Tự động tìm `vocab.txt` trong thư mục Dataset.
+    - Ưu tiên 3: Tự động tìm `vocab.txt` trong thư mục Model Base (Pretrained).
+    - Mặc định: Nếu không thấy, sẽ dùng Byte (UTF-8) để đảm bảo tính tương thích cao nhất.

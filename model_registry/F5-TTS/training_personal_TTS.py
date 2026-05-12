@@ -77,7 +77,7 @@ class MimicDataset(Dataset):
         }
 
 def train_personal_data(data_dir, metadata_file, epochs, batch_size, checkpoint_dir,
-                        learning_rate=7.5e-5, num_warmup_updates=500):
+                        learning_rate=7.5e-5, num_warmup_updates=500, vocab_file=None):
     print("Initializing configuration...")
     # Configuration
     DATA_DIR = data_dir
@@ -104,9 +104,22 @@ def train_personal_data(data_dir, metadata_file, epochs, batch_size, checkpoint_
         "n_fft": 1024
     }
 
-    # 1. Setup Tokenizer (Byte-level for UTF-8 support)
+    # 1. Setup Tokenizer
     print("Setting up tokenizer...")
-    vocab_char_map, vocab_size = get_tokenizer(None, tokenizer="byte")
+    if vocab_file and os.path.exists(vocab_file):
+        # Automatically copy vocab to checkpoint directory for portability
+        import shutil
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        dest_vocab = os.path.join(checkpoint_dir, "vocab.txt")
+        if not os.path.exists(dest_vocab) or not os.path.samefile(vocab_file, dest_vocab):
+            shutil.copy(vocab_file, dest_vocab)
+            print(f"Copied vocab file to checkpoint directory: {checkpoint_dir}")
+
+        print(f"Using custom vocab file: {vocab_file}")
+        vocab_char_map, vocab_size = get_tokenizer(vocab_file, tokenizer="custom")
+    else:
+        print("Using default byte tokenizer (UTF-8)")
+        vocab_char_map, vocab_size = get_tokenizer(None, tokenizer="byte")
 
     # 2. Initialize Model (DiT + CFM)
     print(f"Initializing model backend: DiT...")
@@ -150,9 +163,28 @@ def train_personal_data(data_dir, metadata_file, epochs, batch_size, checkpoint_
         # Path resolution for base model: check --pretrained_checkpoint or default
         base_weight_path = getattr(args, 'pretrained_checkpoint', None)
         if not base_weight_path:
-            # Default search: ckpts/base/model_1200000.pt
-            base_weight_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ckpts", "base", "model_1200000.pt")
+            # Mặc định dùng model tiếng Việt trong thư mục ckpts/vietnamese/
+            base_weight_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ckpts", "vietnamese", "model_last.pt")
         
+        # Tự động tải nếu không tồn tại
+        if not os.path.exists(base_weight_path):
+            print(f"Pretrained weight not found at {base_weight_path}")
+            print("Downloading Vietnamese pretrained model from Hugging Face...")
+            os.makedirs(os.path.dirname(base_weight_path), exist_ok=True)
+            
+            import urllib.request
+            url = "https://huggingface.co/hynt/F5-TTS-Vietnamese-ViVoice/resolve/main/model_last.pt"
+            try:
+                def progress(count, block_size, total_size):
+                    percent = int(count * block_size * 100 / total_size)
+                    sys.stdout.write(f"\rDownloading: {percent}%")
+                    sys.stdout.flush()
+                
+                urllib.request.urlretrieve(url, base_weight_path, reporthook=progress)
+                print("\nDownload completed successfully.")
+            except Exception as e:
+                print(f"\nFailed to download: {e}")
+
         if os.path.exists(base_weight_path):
             print(f"PREPARING TO FINE-TUNE FROM: {base_weight_path}")
             
@@ -202,10 +234,11 @@ if __name__ == "__main__":
     parser.add_argument("--metadata_file", type=str, required=True, help="Name of the metadata file")
     parser.add_argument("--epochs", type=int, default=10, help="Number of training epochs")
     parser.add_argument("--batch_size", type=int, default=4, help="Batch size per GPU")
-    parser.add_argument("--checkpoint_dir", type=str, default="ckpts/personal_tts_vn", help="Directory to save checkpoints")
+    parser.add_argument("--checkpoint_dir", type=str, default="ckpts/vietnamese", help="Directory to save checkpoints")
     parser.add_argument("--pretrained_checkpoint", type=str, help="Path to pretrained base model weights")
     parser.add_argument("--learning_rate", type=float, default=7.5e-5, help="Optimizer learning rate")
     parser.add_argument("--num_warmup_updates", type=int, default=500, help="Number of warmup update steps")
+    parser.add_argument("--vocab_file", type=str, help="Path to custom vocab.txt")
 
     args = parser.parse_args()
 
@@ -216,5 +249,6 @@ if __name__ == "__main__":
         batch_size=args.batch_size,
         checkpoint_dir=args.checkpoint_dir,
         learning_rate=args.learning_rate,
-        num_warmup_updates=args.num_warmup_updates
+        num_warmup_updates=args.num_warmup_updates,
+        vocab_file=args.vocab_file
     )

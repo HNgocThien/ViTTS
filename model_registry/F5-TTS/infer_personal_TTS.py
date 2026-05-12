@@ -115,6 +115,7 @@ def main():
     parser.add_argument("--ref_text", type=str, default="", help="Subtitle/transcript for reference audio")
     parser.add_argument("--gen_text", type=str, required=True, help="Text to generate")
     parser.add_argument("--ckpt_file", type=str, help="Path to checkpoint (local or relative to ckpts/)")
+    parser.add_argument("--vocab_file", type=str, help="Path to vocab.txt file")
     parser.add_argument("--tokenizer", type=str, default="auto", choices=["auto", "byte", "pinyin", "custom"], help="Tokenizer type")
     parser.add_argument("--output_dir", type=str, default="tests", help="Output directory")
     parser.add_argument("--output_file", type=str, help="Output filename")
@@ -155,8 +156,16 @@ def main():
     out_path = Path(args.output_dir) / out_file
 
     # 3. Load Model & Vocoder
+    # Auto-detect vocab if not provided
+    vocab_file = args.vocab_file
+    if not vocab_file:
+        candidate_vocab = os.path.join(os.path.dirname(ckpt_path), "vocab.txt")
+        if os.path.exists(candidate_vocab):
+            vocab_file = candidate_vocab
+            print(f"Auto-detected vocab file at: {vocab_file}")
+
     vocoder = load_vocoder(vocoder_name=args.vocoder_name, device=args.device)
-    model = load_custom_model(ckpt_path, tokenizer=args.tokenizer, device=args.device)
+    model = load_custom_model(ckpt_path, vocab_file=vocab_file, tokenizer=args.tokenizer, device=args.device)
 
     # 4. Preprocess Reference
     print(f"Processing reference: {args.ref_audio}")

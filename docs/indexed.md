@@ -1,7 +1,7 @@
 # Text to Speech Personal - Mục Lục
 
-> **Cập nhật lần cuối**: 2026-05-07
-> **Tổng tiến độ**: 47 / 73 sections hoàn thành *(~64%)*
+> **Cập nhật lần cuối**: 2026-05-12
+> **Tổng tiến độ**: 58 / 73 sections hoàn thành *(~79%)*
 
 ---
 
@@ -49,7 +49,7 @@
 | 2.5 | Cơ chế Voice Cloning | [Section2.5.md](Section2.5.md) | ✅ Done |
 | 2.5.1 | Biểu diễn đặc trưng giọng nói | [Section2.5.md](Section2.5.md#251-biểu-diễn-đặc-trưng-giọng-nói) | ✅ Done |
 | 2.5.2 | Speaker Adaptation | [Section2.5.md](Section2.5.md#252-speaker-adaptation--cá-nhân-hóa-giọng-nói) | ✅ Done |
-| **3** | **THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG** | — | 🔄 In Progress |
+| **3** | **THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG** | — | ✅ Done |
 | 3.1 | Tổng quan kiến trúc hệ thống | [Section3.1.md](Section3.1.md) | ✅ Done |
 | 3.1.1 | Backend (FastAPI) | [Section3.1.md](Section3.1.md#311-backend-fastapi) | ✅ Done |
 | 3.1.2 | Frontend giao diện người dùng | [Section3.1.md](Section3.1.md#312-frontend--giao-diện-người-dùng) | ✅ Done |
@@ -58,17 +58,17 @@
 | 3.2.1 | Thu thập dữ liệu giọng nói | [Section3.2.md](Section3.2.md#321-thu-thập-dữ-liệu-giọng-nói) | ✅ Done |
 | 3.2.2 | Gán nhãn (Labeling) | [Section3.2.md](Section3.2.md#322-gán-nhãn-labeling) | ✅ Done |
 | 3.2.3 | Tiền xử lý âm thanh và văn bản | [Section3.2.md](Section3.2.md#323-tiền-xử-lý-âm-thanh-và-văn-bản) | ✅ Done |
-| 3.3 | Huấn luyện mô hình | — | ⬜ Not Started |
-| 3.3.1 | Cấu hình môi trường (GPU, Docker) | — | ⬜ Not Started |
-| 3.3.2 | Các siêu tham số (Hyperparameters) | — | ⬜ Not Started |
-| 3.3.3 | Quản lý checkpoint | — | ⬜ Not Started |
-| 3.4 | Triển khai suy diễn | — | ⬜ Not Started |
-| 3.4.1 | Xây dựng API sinh giọng nói | — | ⬜ Not Started |
-| 3.4.2 | Tối ưu tốc độ suy diễn | — | ⬜ Not Started |
-| 3.5 | Các vấn đề gặp phải và hướng xử lý | — | ⬜ Not Started |
-| 3.5.1 | Lỗi trong quá trình huấn luyện | — | ⬜ Not Started |
-| 3.5.2 | Lỗi trong suy diễn | — | ⬜ Not Started |
-| 3.5.3 | Tối ưu tài nguyên hệ thống | — | ⬜ Not Started |
+| 3.3 | Huấn luyện mô hình | [Section3.3.md](Section3.3.md) | ✅ Done |
+| 3.3.1 | Cấu hình môi trường (GPU, Docker) | [Section3.3.md](Section3.3.md#331-cấu-hình-môi-trường-gpu-docker) | ✅ Done |
+| 3.3.2 | Các siêu tham số (Hyperparameters) | [Section3.3.md](Section3.3.md#332-các-siêu-tham-số-hyperparameters) | ✅ Done |
+| 3.3.3 | Quản lý checkpoint | [Section3.3.md](Section3.3.md#333-quản-lý-checkpoint) | ✅ Done |
+| 3.4 | Triển khai suy diễn | [Section3.4.md](Section3.4.md) | ✅ Done |
+| 3.4.1 | Xây dựng API sinh giọng nói | [Section3.4.md](Section3.4.md#341-xây-dựng-api-sinh-giọng-nói) | ✅ Done |
+| 3.4.2 | Tối ưu tốc độ suy diễn | [Section3.4.md](Section3.4.md#342-tối-ưu-tốc-độ-suy-diễn) | ✅ Done |
+| 3.5 | Các vấn đề gặp phải và hướng xử lý | [Section3.5.md](Section3.5.md) | ✅ Done |
+| 3.5.1 | Lỗi trong quá trình huấn luyện | [Section3.5.md](Section3.5.md#351-lỗi-trong-quá-trình-huấn-luyện) | ✅ Done |
+| 3.5.2 | Lỗi trong suy diễn | [Section3.5.md](Section3.5.md#352-lỗi-trong-suy-diễn) | ✅ Done |
+| 3.5.3 | Tối ưu tài nguyên hệ thống | [Section3.5.md](Section3.5.md#353-tối-ưu-tài-nguyên-hệ-thống) | ✅ Done |
 | **4** | **THỰC NGHIỆM VÀ ĐÁNH GIÁ** | — | ⬜ Not Started |
 | 4.1 | Thiết lập thực nghiệm | — | ⬜ Not Started |
 | 4.1.1 | Tập dữ liệu sử dụng | — | ⬜ Not Started |
@@ -116,6 +116,9 @@
 | [Section2.5.md](Section2.5.md) | ~8 KB | ✅ Đầy đủ (Voice Cloning + Phụ lục) |
 | [Section3.1.md](Section3.1.md) | ~10 KB | ✅ Đầy đủ (Kiến trúc hệ thống + Phụ lục) |
 | [Section3.2.md](Section3.2.md) | ~9 KB | ✅ Đầy đủ (Thu thập & tiền xử lý dữ liệu + Phụ lục) |
+| [Section3.3.md](Section3.3.md) | ~10 KB | ✅ Đầy đủ (Huấn luyện mô hình + Phụ lục) |
+| [Section3.4.md](Section3.4.md) | ~11 KB | ✅ Đầy đủ (Triển khai inference + Phụ lục) |
+| [Section3.5.md](Section3.5.md) | ~10 KB | ✅ Đầy đủ (Vấn đề & giải pháp + Phụ lục) |
 
 ---
 
