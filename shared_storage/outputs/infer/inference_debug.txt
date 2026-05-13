@@ -1,6 +1,7 @@
-[2026-05-11 10:24:07] Inference log reset for new request.
-[2026-05-11 10:24:07] Generation request: {"text":"Giữa nhịp sống hối hả của thế gian, đôi khi chúng ta cần một khoảng lặng để tâm hồn được nghỉ ngơi. Bình yên không nằm ở đâu xa xôi hay những điều xa hoa, mà hiện hữu ngay trong từng hơi thở và những khoảnh khắc giản đơn nhất của cuộc đời.\nHãy cứ chậm lại một chút để cảm nhận vẻ đẹp của cuộc sống này. Mỗi vết xước trên hành trình trưởng thành đều là một bài học quý giá, giúp ta vững vàng và bao dung hơn với chính mình.","checkpoint":"vietnamese/model_last.pt","ref_audio":"wavs/0001_thien_dataset.wav","ref_text":"Hôm nay, tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình.","model":"F5TTS-Base","dataset":"thien_dataset"}
-[2026-05-11 10:24:38] Auto-detected: arch=F5TTS_Base, tokenizer=custom from /model_registry/F5-TTS/ckpts/vietnamese/model_last.pt
+[2026-05-13 10:24:16] Inference log reset for new request.
+[2026-05-13 10:24:16] Generation request: {"text":"Bạn đã ăn sáng chưa?","checkpoint":"vietnamese/model_last.pt","ref_audio":"wavs/0001_thien_dataset.wav","ref_text":"Hôm nay tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình.","model":"F5TTS-Base","dataset":"thien_dataset"}
+[2026-05-13 10:24:16] Using cached architecture detection for /model_registry/F5-TTS/ckpts/vietnamese/model_last.pt
+[2026-05-13 10:24:16] Auto-detected: arch=F5TTS_Base, tokenizer=custom from /model_registry/F5-TTS/ckpts/vietnamese/model_last.pt
 [INFO] Launching inference subprocess...
 Auto-detected vocab file at: /model_registry/F5-TTS/ckpts/vietnamese/vocab.txt
 Download Vocos from huggingface charactr/vocos-mel-24khz
@@ -11,15 +12,12 @@ Processing reference: /shared_storage/datasets/thien_dataset/wavs/0001_thien_dat
 Converting audio...
 Using custom reference text...
 
-ref_text   Hôm nay, tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình. 
-Generating audio for: Giữa nhịp sống hối hả của thế gian, đôi khi chúng ta cần một khoảng lặng để tâm hồn được nghỉ ngơi. Bình yên không nằm ở đâu xa xôi hay những điều xa hoa, mà hiện hữu ngay trong từng hơi thở và những khoảnh khắc giản đơn nhất của cuộc đời.
-Hãy cứ chậm lại một chút để cảm nhận vẻ đẹp của cuộc sống này. Mỗi vết xước trên hành trình trưởng thành đều là một bài học quý giá, giúp ta vững vàng và bao dung hơn với chính mình.
-gen_text 0 Giữa nhịp sống hối hả của thế gian, đôi khi chúng ta cần một khoảng lặng để tâm hồn được nghỉ ngơi. Bình yên không nằm ở đâu xa xôi hay những điều xa hoa, mà hiện hữu ngay trong từng hơi thở và những khoảnh khắc giản đơn nhất của cuộc đời.
-gen_text 1 Hãy cứ chậm lại một chút để cảm nhận vẻ đẹp của cuộc sống này. Mỗi vết xước trên hành trình trưởng thành đều là một bài học quý giá, giúp ta vững vàng và bao dung hơn với chính mình.
+ref_text   Hôm nay tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình. 
+Generating audio for: Bạn đã ăn sáng chưa?
+gen_text 0 Bạn đã ăn sáng chưa?
 
 
-Generating audio in 2 batches...
-Processing batch 1/2...
-Processing batch 2/2...
-Success! Audio saved to: /shared_storage/outputs/infer/output_17a0bd79.wav
-[SUCCESS] Audio saved: output_17a0bd79.wav
+Generating audio in 1 batches...
+Processing batch 1/1...
+Success! Audio saved to: /shared_storage/outputs/infer/output_3f1ed72a.wav
+[SUCCESS] Audio saved: output_3f1ed72a.wav

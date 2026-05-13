@@ -157,14 +157,25 @@ def _find_latest_checkpoint(ckpt_dir: str) -> Optional[str]:
 # Architecture detection
 # ─────────────────────────────────────────────
 
+ARCH_CACHE = {}
+
 def detect_architecture_from_ckpt(ckpt_path: str) -> dict:
     """Detect architecture and required tokenizer from checkpoint weights."""
     import torch
+    import gc
 
     result = {"arch": "F5TTS_Base", "tokenizer": "pinyin"}
 
     if not ckpt_path or not os.path.exists(ckpt_path):
         return result
+
+    try:
+        mtime = os.path.getmtime(ckpt_path)
+        if ckpt_path in ARCH_CACHE and ARCH_CACHE[ckpt_path]["mtime"] == mtime:
+            log_inference(f"Using cached architecture detection for {ckpt_path}")
+            return ARCH_CACHE[ckpt_path]["result"]
+    except Exception:
+        pass
 
     try:
         checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=True)
@@ -189,6 +200,13 @@ def detect_architecture_from_ckpt(ckpt_path: str) -> dict:
                 else:
                     result["tokenizer"] = "custom"
                 break
+
+        del state_dict
+        del checkpoint
+        gc.collect()
+        torch.cuda.empty_cache()
+
+        ARCH_CACHE[ckpt_path] = {"mtime": os.path.getmtime(ckpt_path), "result": result}
 
     except Exception as e:
         log_inference(f"Checkpoint detection failed: {e}")
@@ -267,6 +285,7 @@ async def generate_voice(config: GenerateConfig, background_tasks: BackgroundTas
         "--output_dir", INFER_DIR,
         "--output_file", out_filename,
         "--tokenizer", detected_tokenizer,
+        "--device", "cuda",
     ]
     if ckpt_path:
         cli_cmd += ["--ckpt_file", ckpt_path]

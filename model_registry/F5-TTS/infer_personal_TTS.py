@@ -25,6 +25,7 @@ from f5_tts.model.utils import get_tokenizer
 
 def detect_configuration(ckpt_path):
     """Detect architecture and tokenizer from checkpoint weights."""
+    import gc
     print(f"Detecting configuration from {ckpt_path}...")
     
     # Defaults to V0 (F5TTS_Base) config
@@ -67,6 +68,11 @@ def detect_configuration(ckpt_path):
                 else:
                     tokenizer_type = "custom"
                 break
+
+        del state_dict
+        del checkpoint
+        gc.collect()
+        torch.cuda.empty_cache()
                 
     except Exception as e:
         print(f"Warning: Configuration detection failed: {e}. Using defaults.")

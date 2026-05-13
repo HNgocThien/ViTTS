@@ -58,3 +58,5 @@ Thumbs.db
 *.tmp
 .pytest_cache/
 .ipynb_checkpoints/
+
+shared_storage/hf_cache/

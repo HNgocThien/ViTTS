@@ -89,6 +89,8 @@ graph LR
 - [x] **Native Recording**: Hoạt động, ghi trực tiếp ra định dạng Dataset chuẩn.
 - [x] **Unified API**: Tích hợp xong Train/Infer/Collect vào 1 port 8000.
 - [x] **Smart Vocab System**: Tự động nhận diện bảng chữ cái tiếng Việt cho cả Train và Infer.
+- [x] **Memory & VRAM Optimization**: Tối ưu hóa nạp model và giải phóng RAM tự động cho máy 16GB.
+- [x] **Persistent Vocoder Caching**: Lưu trữ và tái sử dụng Vocoder model (Vocos/BigVGAN) để tăng tốc suy diễn.
 
 ---
 
@@ -101,3 +103,17 @@ graph LR
     - Ưu tiên 2: Tự động tìm `vocab.txt` trong thư mục Dataset.
     - Ưu tiên 3: Tự động tìm `vocab.txt` trong thư mục Model Base (Pretrained).
     - Mặc định: Nếu không thấy, sẽ dùng Byte (UTF-8) để đảm bảo tính tương thích cao nhất.
+
+---
+
+## 10. Chiến lược tối ưu hóa bộ nhớ (Memory Optimization Strategy - Bổ sung mới)
+Để chạy mượt mà trên các hệ thống có cấu hình RAM trung bình (ví dụ: 16GB RAM) với model Base lớn (>5GB), hệ thống áp dụng chiến lược quản lý bộ nhớ nghiêm ngặt:
+
+- **Inference Optimization**:
+    - **Architecture Caching**: Backend tự động ghi nhớ (cache) kiến trúc của model sau lần nạp đầu tiên, loại bỏ việc nạp lại file 5GB chỉ để kiểm tra cấu hình trong các yêu cầu tiếp theo.
+    - **Persistent Vocoder Caching**: Model Vocoder (Vocos/BigVGAN) được lưu trữ trong volume riêng, tránh việc tải lại từ Internet mỗi khi khởi động Service, đảm bảo tính ổn định và tốc độ.
+    - **Aggressive Cleanup**: Sử dụng `gc.collect()` và `del` để xóa các bản sao model tạm thời trong RAM hệ thống ngay sau khi dữ liệu đã được nạp vào GPU/vùng nhớ làm việc.
+- **Training Optimization**:
+    - **8-bit AdamW**: Sử dụng trình tối ưu hóa `BitsAndBytes` để giảm 75% bộ nhớ cho optimizer states.
+    - **Gradient Accumulation & Activation Checkpointing**: Giảm tối đa dung lượng VRAM cần thiết bằng cách gộp các bước cập nhật và tái tính toán activations.
+    - **Startup Cleanup**: Giải phóng RAM hệ thống ngay sau khi nạp model pretrained để dành tài nguyên cho quá trình huấn luyện dữ liệu mới.

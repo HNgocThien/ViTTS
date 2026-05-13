@@ -2,6 +2,7 @@
 # Make adjustments inside functions, and consider both gradio and cli scripts if need to change func output format
 import os
 import sys
+import gc
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -231,6 +232,7 @@ def load_checkpoint(model, ckpt_path, device: str, dtype=None, use_ema=True):
         model.load_state_dict(checkpoint["model_state_dict"])
 
     del checkpoint
+    gc.collect()
     torch.cuda.empty_cache()
 
     return model.to(device)
@@ -530,6 +532,8 @@ def infer_batch_process(
         generated_wave, generated = _infer_basic(gen_text)
         generated_cpu = generated[0].cpu().numpy()
         del generated
+        gc.collect()
+        torch.cuda.empty_cache()
         return generated_wave, generated_cpu
 
     def infer_single_process_streaming(gen_text):

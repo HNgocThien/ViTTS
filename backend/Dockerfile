@@ -24,6 +24,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
+# Thiết lập thư mục cache cho HuggingFace
+ENV HF_HOME=/shared_storage/hf_cache
+
 EXPOSE 8000
 EXPOSE 8001
 

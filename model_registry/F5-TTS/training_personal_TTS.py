@@ -1,6 +1,7 @@
 import os
 import sys
 import torch
+import gc
 import argparse
 from torch.utils.data import Dataset
 
@@ -218,6 +219,13 @@ def train_personal_data(data_dir, metadata_file, epochs, batch_size, checkpoint_
             
             model.load_state_dict(filtered_state_dict, strict=False)
             print(f"Successfully loaded {len(filtered_state_dict)} layers from pretrained weights.")
+            
+            # 🔥 CRITICAL: Free RAM immediately
+            del state_dict
+            del checkpoint
+            del filtered_state_dict
+            gc.collect()
+            torch.cuda.empty_cache()
             
             # Note: We don't copy the file to the checkpoint dir because we already manually loaded it.
             # The Trainer will save the first local checkpoint normally.

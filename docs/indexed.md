@@ -1,7 +1,7 @@
 # Text to Speech Personal - Mục Lục
 
-> **Cập nhật lần cuối**: 2026-05-12
-> **Tổng tiến độ**: 58 / 73 sections hoàn thành *(~79%)*
+> **Cập nhật lần cuối**: 2026-05-13
+> **Tổng tiến độ**: 59 / 73 sections hoàn thành *(~81%)*
 
 ---
 
@@ -69,10 +69,10 @@
 | 3.5.1 | Lỗi trong quá trình huấn luyện | [Section3.5.md](Section3.5.md#351-lỗi-trong-quá-trình-huấn-luyện) | ✅ Done |
 | 3.5.2 | Lỗi trong suy diễn | [Section3.5.md](Section3.5.md#352-lỗi-trong-suy-diễn) | ✅ Done |
 | 3.5.3 | Tối ưu tài nguyên hệ thống | [Section3.5.md](Section3.5.md#353-tối-ưu-tài-nguyên-hệ-thống) | ✅ Done |
-| **4** | **THỰC NGHIỆM VÀ ĐÁNH GIÁ** | — | ⬜ Not Started |
-| 4.1 | Thiết lập thực nghiệm | — | ⬜ Not Started |
-| 4.1.1 | Tập dữ liệu sử dụng | — | ⬜ Not Started |
-| 4.1.2 | Môi trường phần cứng | — | ⬜ Not Started |
+| **4** | **THỰC NGHIỆM VÀ ĐÁNH GIÁ** | — | 🔄 In Progress |
+| 4.1 | Thiết lập thực nghiệm | [Section4.1.md](Section4.1.md) | ✅ Done |
+| 4.1.1 | Tập dữ liệu sử dụng | [Section4.1.md](Section4.1.md#411-tập-dữ-liệu-sử-dụng) | ✅ Done |
+| 4.1.2 | Môi trường phần cứng | [Section4.1.md](Section4.1.md#412-môi-trường-phần-cứng-và-phần-mềm) | ✅ Done |
 | 4.2 | Kết quả thực nghiệm | — | ⬜ Not Started |
 | 4.2.1 | Kết quả trước và sau fine-tuning | — | ⬜ Not Started |
 | 4.2.2 | Ví dụ âm thanh sinh ra | — | ⬜ Not Started |
@@ -119,6 +119,7 @@
 | [Section3.3.md](Section3.3.md) | ~10 KB | ✅ Đầy đủ (Huấn luyện mô hình + Phụ lục) |
 | [Section3.4.md](Section3.4.md) | ~11 KB | ✅ Đầy đủ (Triển khai inference + Phụ lục) |
 | [Section3.5.md](Section3.5.md) | ~10 KB | ✅ Đầy đủ (Vấn đề & giải pháp + Phụ lục) |
+| [Section4.1.md](Section4.1.md) | ~5 KB | ✅ Đầy đủ (Thiết lập thực nghiệm + Phụ lục) |
 
 ---
 
@@ -134,7 +135,7 @@ flowchart TD
     E1 --> E2["✅ Done\nSection2.2.md\n(Kiến trúc F5-TTS)"]
     E2 --> F["🔄 In Progress\nChương 2\n(Training & Inference)"]
     F --> G["⬜ Viết mới\nChương 3\n(System Design)"]
-    G --> H["⬜ Viết mới\nChương 4\n(Kết quả)"]
+    G --> H["🔄 In Progress\nChương 4\n(Kết quả)"]
     H --> I["⬜ Viết mới\nChương 5\n(Kết luận)"]
 
     style A fill:#d3f9d8,stroke:#40c057
@@ -145,4 +146,5 @@ flowchart TD
     style E1 fill:#d3f9d8,stroke:#40c057
     style E2 fill:#d3f9d8,stroke:#40c057
     style F fill:#fff3bf,stroke:#fab005
+    style H fill:#fff3bf,stroke:#fab005
 ```
