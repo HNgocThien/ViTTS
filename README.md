@@ -145,11 +145,11 @@ cd ViTTS
 
 ### 2. Tải checkpoint tiếng Việt pretrained
 
-Tải checkpoint tiếng Việt và đặt vào thư mục `model_registry/F5-TTS/ckpts/vietnamese/`:
+Tải tệp tin checkpoint tiếng Việt [model_last.pt từ HuggingFace](https://huggingface.co/hynt/F5-TTS-Vietnamese-ViVoice/blob/main/model_last.pt) và đặt vào thư mục `model_registry/F5-TTS/ckpts/vietnamese/`:
 
 ```
 model_registry/F5-TTS/ckpts/vietnamese/
-├── model_last.pt      # Checkpoint chính
+├── model_last.pt      # Checkpoint chính (Tải từ HuggingFace)
 └── vocab.txt          # Bảng chữ cái tiếng Việt
 ```
 
