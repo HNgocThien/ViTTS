@@ -60,3 +60,6 @@ Thumbs.db
 .ipynb_checkpoints/
 
 shared_storage/hf_cache/
+
+test/
+docs/
