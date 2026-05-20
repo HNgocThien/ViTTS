@@ -286,8 +286,8 @@ Dự án được phân phối theo giấy phép **MIT**. Xem chi tiết tại f
 
 ## 👨‍💻 Tác giả
 
-**Huỳnh Ngọc Thiện**
-- 🎓 Sinh viên năm cuối — Đại học [Tên trường]
+**Hồ Ngọc Thiện**
+- 🎓 Sinh viên năm cuối — Đại học Quy Nhơn
 - 📘 Khóa luận tốt nghiệp: *"Xây dựng hệ thống tổng hợp và nhân bản giọng nói cá nhân tiếng Việt sử dụng F5-TTS"*
 
 ---
