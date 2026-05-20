@@ -24,7 +24,7 @@ function App() {
         {[
           { key: 'label', icon: <Mic size={18} />, label: '1. Labeling' },
           { key: 'train', icon: <Activity size={18} />, label: '2. Training' },
-          { key: 'test', icon: <Headphones size={18} />, label: '3. Testing' },
+          { key: 'infer', icon: <Headphones size={18} />, label: '3. Inference' },
         ].map(({ key, icon, label }) => (
           <div
             key={key}
@@ -47,7 +47,7 @@ function App() {
       <div className="main-content">
         {activeTab === 'label' && <LabelingTab />}
         {activeTab === 'train' && <TrainingTab datasets={datasets} />}
-        {activeTab === 'test' && <TestingTab checkpoints={checkpoints} datasets={datasets} activeTab={activeTab} />}
+        {activeTab === 'infer' && <InferenceTab checkpoints={checkpoints} datasets={datasets} activeTab={activeTab} />}
       </div>
     </div>
   );
@@ -657,9 +657,9 @@ function TrainingTab({ datasets }) {
   );
 }
 
-// ─── Testing Tab ───────────────────────────────────────────────────────────────
+// ─── Inference Tab ───────────────────────────────────────────────────────────────
 
-function TestingTab({ checkpoints, datasets, activeTab }) {
+function InferenceTab({ checkpoints, datasets, activeTab }) {
   const [text, setText] = useState('Nhớ ai bổi hổi bồi hồi, như đứng đống lửa, như ngồi đống than.');
   const [checkpoint, setCheckpoint] = useState('');
   const [dataset, setDataset] = useState('');

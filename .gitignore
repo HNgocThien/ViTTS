@@ -29,6 +29,9 @@ datasets/*
 *.onnx
 *.ckpt
 *.h5
+*.zip
+*.tar.gz
+*.tgz
 
 # Audio/Output files
 *.wav
@@ -64,3 +67,4 @@ shared_storage/hf_cache/
 test/
 docs/
 .agents/
+application_design.md
