@@ -2,13 +2,83 @@
 [INFO] Base model: F5TTS-Base (Type: f5tts)
 [INFO] Epochs: 10 | Batch size: 4
 [INFO] Learning rate: 7.5e-05 | Warmup: 500
-usage: training_personal_TTS.py [-h] --data_dir DATA_DIR --metadata_file
-                                METADATA_FILE [--epochs EPOCHS]
-                                [--batch_size BATCH_SIZE]
-                                [--checkpoint_dir CHECKPOINT_DIR]
-                                [--pretrained_checkpoint PRETRAINED_CHECKPOINT]
-                                [--learning_rate LEARNING_RATE]
-                                [--num_warmup_updates NUM_WARMUP_UPDATES]
-                                [--vocab_file VOCAB_FILE]
-training_personal_TTS.py: error: unrecognized arguments: --model_type f5tts
-[ERROR] Training failed with exit code 2
+Initializing configuration...
+Setting up tokenizer...
+Copied vocab file to checkpoint directory: /model_registry/F5-TTS/ckpts/thien_dataset
+Using custom vocab file: /model_registry/F5-TTS/data/vietnamese/vocab.txt
+Initializing model backend: DiT...
+Initializing trainer...
+Using logger: None
+Gradient accumulation checkpointing with per_updates now, old logic per_steps used with before f992c4e
+Loading dataset...
+Dataset loaded with 2 samples.
+Starting fine-tuning...
+
+Epoch 1/10:   0%|          | 0/1 [00:00<?, ?update/s]/opt/conda/lib/python3.11/site-packages/torch/utils/checkpoint.py:1399: FutureWarning: `torch.cpu.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cpu', args...)` instead.
+  with device_autocast_ctx, torch.cpu.amp.autocast(**cpu_autocast_kwargs), recompute_context:  # type: ignore[attr-defined]
+
+Epoch 1/10: 100%|██████████| 1/1 [00:04<00:00,  4.69s/update]
+Epoch 1/10: 100%|██████████| 1/1 [00:04<00:00,  4.69s/update, loss=0.848, update=11]
+
+Epoch 2/10:   0%|          | 0/1 [00:00<?, ?update/s][A
+Epoch 1/10: 100%|██████████| 1/1 [00:04<00:00,  4.70s/update, loss=0.848, update=11]
+
+
+Epoch 2/10: 100%|██████████| 1/1 [00:03<00:00,  3.52s/update][A
+
+Epoch 2/10: 100%|██████████| 1/1 [00:03<00:00,  3.52s/update, loss=0.525, update=12][A
+Epoch 3/10:   0%|          | 0/1 [00:00<?, ?update/s]
+Epoch 2/10: 100%|██████████| 1/1 [00:03<00:00,  3.52s/update, loss=0.525, update=12]
+
+Epoch 3/10: 100%|██████████| 1/1 [00:03<00:00,  3.49s/update]
+Epoch 3/10: 100%|██████████| 1/1 [00:03<00:00,  3.49s/update, loss=0.653, update=13]
+
+Epoch 4/10:   0%|          | 0/1 [00:00<?, ?update/s][A
+Epoch 3/10: 100%|██████████| 1/1 [00:03<00:00,  3.49s/update, loss=0.653, update=13]
+
+
+Epoch 4/10: 100%|██████████| 1/1 [00:03<00:00,  3.42s/update][A
+
+Epoch 4/10: 100%|██████████| 1/1 [00:03<00:00,  3.42s/update, loss=0.858, update=14][A
+Epoch 5/10:   0%|          | 0/1 [00:00<?, ?update/s]
+Epoch 4/10: 100%|██████████| 1/1 [00:03<00:00,  3.43s/update, loss=0.858, update=14]
+
+Epoch 5/10: 100%|██████████| 1/1 [00:08<00:00,  8.35s/update]
+Epoch 5/10: 100%|██████████| 1/1 [00:08<00:00,  8.35s/update, loss=0.855, update=15]
+
+Epoch 6/10:   0%|          | 0/1 [00:00<?, ?update/s][A
+Epoch 5/10: 100%|██████████| 1/1 [00:08<00:00,  8.35s/update, loss=0.855, update=15]
+
+
+Epoch 6/10: 100%|██████████| 1/1 [00:03<00:00,  3.44s/update][A
+
+Epoch 6/10: 100%|██████████| 1/1 [00:03<00:00,  3.44s/update, loss=0.568, update=16][A
+Epoch 7/10:   0%|          | 0/1 [00:00<?, ?update/s]
+Epoch 6/10: 100%|██████████| 1/1 [00:03<00:00,  3.44s/update, loss=0.568, update=16]
+
+Epoch 7/10: 100%|██████████| 1/1 [00:09<00:00,  9.46s/update]
+Epoch 7/10: 100%|██████████| 1/1 [00:09<00:00,  9.46s/update, loss=0.637, update=17]
+
+Epoch 8/10:   0%|          | 0/1 [00:00<?, ?update/s][A
+Epoch 7/10: 100%|██████████| 1/1 [00:09<00:00,  9.46s/update, loss=0.637, update=17]
+
+
+Epoch 8/10: 100%|██████████| 1/1 [00:09<00:00,  9.64s/update][A
+
+Epoch 8/10: 100%|██████████| 1/1 [00:09<00:00,  9.64s/update, loss=0.425, update=18][A
+Epoch 9/10:   0%|          | 0/1 [00:00<?, ?update/s]
+Epoch 8/10: 100%|██████████| 1/1 [00:09<00:00,  9.64s/update, loss=0.425, update=18]
+
+Epoch 9/10: 100%|██████████| 1/1 [00:08<00:00,  8.51s/update]
+Epoch 9/10: 100%|██████████| 1/1 [00:08<00:00,  8.51s/update, loss=0.487, update=19]
+
+Epoch 10/10:   0%|          | 0/1 [00:00<?, ?update/s][A
+Epoch 9/10: 100%|██████████| 1/1 [00:08<00:00,  8.51s/update, loss=0.487, update=19]
+
+
+Epoch 10/10: 100%|██████████| 1/1 [00:03<00:00,  3.45s/update][A
+
+Epoch 10/10: 100%|██████████| 1/1 [00:03<00:00,  3.45s/update, loss=0.742, update=20][ASaved last checkpoint at update 20
+
+Epoch 10/10: 100%|██████████| 1/1 [00:18<00:00, 18.48s/update, loss=0.742, update=20]
+[SUCCESS] Training completed successfully!

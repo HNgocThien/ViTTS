@@ -247,6 +247,7 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", type=float, default=7.5e-5, help="Optimizer learning rate")
     parser.add_argument("--num_warmup_updates", type=int, default=500, help="Number of warmup update steps")
     parser.add_argument("--vocab_file", type=str, help="Path to custom vocab.txt")
+    parser.add_argument("--model_type", type=str, default="f5tts", help="Model type/architecture")
 
     args = parser.parse_args()
 

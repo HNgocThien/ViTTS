@@ -1,23 +1,23 @@
-[2026-05-13 10:24:16] Inference log reset for new request.
-[2026-05-13 10:24:16] Generation request: {"text":"Bạn đã ăn sáng chưa?","checkpoint":"vietnamese/model_last.pt","ref_audio":"wavs/0001_thien_dataset.wav","ref_text":"Hôm nay tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình.","model":"F5TTS-Base","dataset":"thien_dataset"}
-[2026-05-13 10:24:16] Using cached architecture detection for /model_registry/F5-TTS/ckpts/vietnamese/model_last.pt
-[2026-05-13 10:24:16] Auto-detected: arch=F5TTS_Base, tokenizer=custom from /model_registry/F5-TTS/ckpts/vietnamese/model_last.pt
+[2026-05-26 10:11:13] Inference log reset for new request.
+[2026-05-26 10:11:13] Generation request: {"text":"Xin chào tất cả mọi người, tôi là Trường Chinh.","checkpoint":"thien_dataset/model_last.pt","ref_audio":"wavs/0001_thien_dataset.wav","ref_text":"Hôm nay tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình.","model":"F5TTS-Base","dataset":"thien_dataset"}
+[2026-05-26 10:11:13] Using cached architecture detection for /model_registry/F5-TTS/ckpts/thien_dataset/model_last.pt
+[2026-05-26 10:11:13] Auto-detected: arch=F5TTS_Base, tokenizer=custom from /model_registry/F5-TTS/ckpts/thien_dataset/model_last.pt
 [INFO] Launching inference subprocess...
-Auto-detected vocab file at: /model_registry/F5-TTS/ckpts/vietnamese/vocab.txt
+Auto-detected vocab file at: /model_registry/F5-TTS/ckpts/thien_dataset/vocab.txt
 Download Vocos from huggingface charactr/vocos-mel-24khz
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Detecting configuration from /model_registry/F5-TTS/ckpts/vietnamese/model_last.pt...
+Detecting configuration from /model_registry/F5-TTS/ckpts/thien_dataset/model_last.pt...
 Initializing model: arch=f5tts, tokenizer=custom, device=cuda
 Processing reference: /shared_storage/datasets/thien_dataset/wavs/0001_thien_dataset.wav
 Converting audio...
 Using custom reference text...
 
 ref_text   Hôm nay tôi bắt đầu ghi âm cho dự án tốt nghiệp của mình. 
-Generating audio for: Bạn đã ăn sáng chưa?
-gen_text 0 Bạn đã ăn sáng chưa?
+Generating audio for: Xin chào tất cả mọi người, tôi là Trường Chinh.
+gen_text 0 Xin chào tất cả mọi người, tôi là Trường Chinh.
 
 
 Generating audio in 1 batches...
 Processing batch 1/1...
-Success! Audio saved to: /shared_storage/outputs/infer/output_3f1ed72a.wav
-[SUCCESS] Audio saved: output_3f1ed72a.wav
+Success! Audio saved to: /shared_storage/outputs/infer/output_094e9c3c.wav
+[SUCCESS] Audio saved: output_094e9c3c.wav
