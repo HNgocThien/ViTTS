@@ -68,3 +68,7 @@ test/
 docs/
 .agents/
 applycation_design.md
+*.ipynb
+*.csv
+plot_loss.py
+training_personal_colab.py

@@ -79,7 +79,7 @@ def detect_configuration(ckpt_path):
         
     return arch, tokenizer_type, model_cfg
 
-def load_custom_model(ckpt_path, vocab_file="", tokenizer="byte", device=default_device):
+def load_custom_model(ckpt_path, vocab_file="", tokenizer="auto", device=default_device):
     """Refined model loader that handles personal DiT config."""
     from importlib.resources import files
     
@@ -88,6 +88,13 @@ def load_custom_model(ckpt_path, vocab_file="", tokenizer="byte", device=default
     # Use detected tokenizer if user didn't explicitly override with something non-default
     if tokenizer == "auto":
         tokenizer = detected_tokenizer
+
+    # Auto-detect vocab file in the checkpoint directory if not provided and using custom tokenizer
+    if not vocab_file and tokenizer == "custom" and ckpt_path:
+        candidate_vocab = os.path.join(os.path.dirname(ckpt_path), "vocab.txt")
+        if os.path.exists(candidate_vocab):
+            vocab_file = candidate_vocab
+            print(f"Auto-detected vocab file in checkpoint directory: {vocab_file}")
 
     # CRITICAL FIX for base model inference:
     # F5-TTS expects tokenizer="custom" and a direct path to vocab.txt for pre-trained models
